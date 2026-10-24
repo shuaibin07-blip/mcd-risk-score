@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>麦险分 · 个人餐饮信用报告</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0B0E14;color:#E6EDF3;padding:28px 16px;
+ font-family:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,
+ "PingFang SC","Microsoft YaHei",monospace;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto}
+
+.hd{display:flex;justify-content:space-between;align-items:flex-end;
+ border-bottom:1px solid #232B3A;padding-bottom:14px;margin-bottom:22px;
+ flex-wrap:wrap;gap:10px;position:relative}
+.hd:after{content:"";position:absolute;left:0;bottom:-1px;width:96px;height:2px;background:#FFC72C}
+.hd h1{font-size:19px;font-weight:600;letter-spacing:.06em}
+.hd .sub{font-size:12px;color:#7D8899;margin-top:4px}
+.meta{font-size:11px;color:#7D8899;text-align:right;line-height:1.8}
+.badge{display:inline-block;padding:2px 8px;border:1px solid #30363D;border-radius:3px;
+ font-size:10px;letter-spacing:.1em;color:#7D8899}
+.badge.live{border-color:#FFC72C;color:#FFC72C}
+.badge.demo{border-color:#8B949E;color:#8B949E}
+
+.hero{display:flex;gap:34px;align-items:center;background:#131822;
+ border:1px solid #232B3A;border-radius:10px;padding:26px 28px;flex-wrap:wrap}
+.scoreWrap{position:relative;padding-right:96px}
+.scoreNum{font-size:96px;font-weight:700;line-height:.92;letter-spacing:-.03em}
+.scoreLbl{font-size:11px;color:#7D8899;letter-spacing:.24em;margin-top:8px}
+.stamp{position:absolute;top:-4px;right:0;border:2px solid currentColor;
+ border-radius:8px;padding:6px 11px;transform:rotate(-7deg);text-align:center;opacity:.95}
+.stamp .r{font-size:22px;font-weight:700;letter-spacing:.04em}
+.stamp .b{font-size:10px;letter-spacing:.1em;opacity:.85;margin-top:1px;white-space:nowrap}
+.heroR{flex:1;min-width:250px}
+.dec{font-size:18px;font-weight:600;margin-bottom:5px}
+.decSub{font-size:12px;color:#7D8899;margin-bottom:16px}
+.bar{height:8px;background:#1C2331;border-radius:4px;position:relative}
+.bar .fill{height:100%;border-radius:4px}
+.bar .mk{position:absolute;top:-5px;width:2px;height:18px;background:#E6EDF3;border-radius:1px}
+.bar .tk{position:absolute;top:-3px;width:1px;height:14px;background:#4A5468}
+.barScl{display:flex;justify-content:space-between;font-size:10px;color:#586069;margin-top:6px}
+
+.insight{background:rgba(255,199,44,.07);border:1px solid rgba(255,199,44,.32);
+ border-left:3px solid #FFC72C;border-radius:8px;padding:15px 18px;margin-top:14px}
+.insightTag{display:inline-block;font-size:10px;letter-spacing:.14em;color:#FFC72C;
+ border:1px solid rgba(255,199,44,.4);border-radius:3px;padding:1px 7px;margin-right:10px}
+.insightText{font-size:14px;color:#E6EDF3}
+
+.warn{background:rgba(210,153,34,.1);border:1px solid rgba(210,153,34,.4);
+ border-radius:8px;padding:12px 16px;margin-top:14px;font-size:12px;color:#D29922;line-height:1.7}
+.warn b{font-weight:600}
+
+.sec{background:#131822;border:1px solid #232B3A;border-radius:10px;padding:20px 24px;margin-top:16px}
+.sec h2{font-size:12px;font-weight:600;letter-spacing:.16em;color:#FFC72C;
+ margin-bottom:16px;padding-bottom:9px;border-bottom:1px solid #232B3A}
+
+.hours{display:grid;grid-template-columns:repeat(24,1fr);gap:2px;align-items:end;height:52px}
+.hours i{display:block;background:#FFC72C;border-radius:1px 1px 0 0;min-height:2px;opacity:.9}
+.hours i.late{background:#E5484D}
+.hours i.zero{background:#232B3A;opacity:1}
+.hAxis{display:grid;grid-template-columns:repeat(24,1fr);gap:2px;margin-top:6px}
+.hAxis span{font-size:10px;color:#586069;text-align:center}
+.hNote{font-size:11px;color:#8B949E;margin-top:12px}
+
+.tl{position:relative;height:60px;margin-top:4px}
+.tlLine{position:absolute;top:26px;left:0;right:0;height:1px;background:#232B3A}
+.tl i{position:absolute;top:23px;width:7px;height:7px;border-radius:50%;margin-left:-3.5px}
+.tl i.n{background:#39414F}
+.tl i.l{background:#E5484D}
+.tlLab{display:flex;justify-content:space-between;font-size:11px;color:#7D8899;margin-top:2px}
+
+.dim{margin-bottom:16px}
+.dim:last-child{margin-bottom:0}
+.dimT{display:flex;justify-content:space-between;align-items:baseline;
+ font-size:13px;margin-bottom:6px;gap:10px}
+.dimT .n{font-weight:600}
+.dimT .w{font-size:10px;color:#586069;letter-spacing:.06em}
+.dimT .s{font-weight:700;font-variant-numeric:tabular-nums}
+.tag{font-size:9px;letter-spacing:.1em;padding:1px 5px;border-radius:3px;margin-left:7px;
+ border:1px solid #E5484D;color:#E5484D}
+.dimB{height:10px;background:#1C2331;border-radius:5px;position:relative;overflow:hidden}
+.dimB i{display:block;height:100%;border-radius:5px}
+.dimB .nt{position:absolute;top:-2px;width:1px;height:14px;background:#586069}
+.dimN{font-size:11px;color:#8B949E;margin-top:6px}
+.dim.weak{background:rgba(229,72,77,.05);border-left:2px solid #E5484D;
+ margin-left:-12px;padding:8px 0 8px 10px;border-radius:0 6px 6px 0}
+
+.big3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.kpiBig{background:#0E131B;border:1px solid #2A3341;border-radius:8px;padding:16px 17px}
+.kpiBig .k{font-size:10px;color:#7D8899;letter-spacing:.08em;margin-bottom:7px}
+.kpiBig .v{font-size:30px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpiBig .u{font-size:12px;color:#7D8899;font-weight:400;margin-left:3px}
+.kpiBig.gold .v{color:#FFC72C}
+.small{display:grid;grid-template-columns:repeat(auto-fit,minmax(126px,1fr));gap:10px 16px;
+ border-top:1px solid #1E2530;padding-top:14px}
+.sm{display:flex;justify-content:space-between;font-size:12px;padding:3px 0}
+.sm .k{color:#7D8899}
+.sm .v{font-variant-numeric:tabular-nums;color:#C9D1D9}
+.sm .v.warnv{color:#E5484D}
+
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;font-size:10px;color:#7D8899;letter-spacing:.1em;font-weight:500;
+ padding:0 10px 9px 0;border-bottom:1px solid #232B3A}
+td{padding:11px 10px 11px 0;border-bottom:1px solid #1A2029;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.lv{display:inline-block;width:44px;text-align:center;font-size:9px;padding:2px 0;
+ border-radius:3px;letter-spacing:.08em;font-weight:600}
+.lv.high{background:rgba(229,72,77,.16);color:#E5484D;border:1px solid rgba(229,72,77,.35)}
+.lv.mid{background:rgba(255,199,44,.14);color:#FFC72C;border:1px solid rgba(255,199,44,.32)}
+.lv.low{background:rgba(139,148,158,.14);color:#8B949E;border:1px solid rgba(139,148,158,.3)}
+.code{font-size:11px;letter-spacing:.05em;color:#C9D1D9}
+.act{font-size:11px;color:#7D8899}
+.evText{font-size:12px;color:#C9D1D9}
+
+.ft{font-size:10.5px;color:#586069;line-height:1.9;padding:16px 4px 0;
+ border-top:1px solid #232B3A;margin-top:20px}
+.ft b{color:#8B949E;font-weight:500}
+
+@media(max-width:600px){
+ .scoreNum{font-size:68px}.scoreWrap{padding-right:82px}
+ .hero{padding:20px;gap:20px}.sec{padding:16px 17px}
+ .meta{text-align:left}.big3{grid-template-columns:1fr}
+}
+@media print{body{background:#fff;color:#111}.sec,.hero{background:#fff;border-color:#ccc}}
+</style></head>
+<body><div class="wrap">
+
+<div class="hd">
+  <div>
+    <h1>MCD RISK SCORE · 个人餐饮信用报告</h1>
+    <div class="sub">MCDONALD'S CONSUMPTION CREDIT ASSESSMENT &nbsp;/&nbsp; v1.0</div>
+  </div>
+  <div class="meta">
+    REF NO. MRS-20261024-113400<br>
+    生成时间 2026-10-24 11:34:00<br>
+    <span class="badge demo">DEMO DATA</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="scoreWrap">
+    <div class="scoreNum" style="color:#C9D1D9">690</div>
+    <div class="scoreLbl">麦 险 分</div>
+    <div class="stamp" style="color:#C9D1D9">
+      <div class="r">A</div>
+      <div class="b">正常客户</div>
+    </div>
+  </div>
+  <div class="heroR">
+    <div class="dec" style="color:#C9D1D9">审批结论：建议通过</div>
+    <div class="decSub">综合分 65.0 / 100 · 样本 68 笔订单</div>
+    <div class="bar">
+      <div class="fill" style="width:65.0%;background:#C9D1D9"></div>
+      <div class="tk" style="left:60%"></div>
+      <div class="mk" style="left:65.0%"></div>
+    </div>
+    <div class="barScl"><span>300</span><span>660 中性</span><span>900</span></div>
+  </div>
+</div>
+
+<div class="insight">
+  <span class="insightTag">关键发现</span>
+  <span class="insightText">你有 640 积分正在过期，占可用积分的 27%，属于典型的资产减值。</span>
+</div>
+
+
+
+<div class="sec">
+  <h2>24 小 时 下 单 分 布 / HOURLY PATTERN</h2>
+  <div class="hours"><i class="zero" style="height:2px" title="0点 0 笔"></i><i class="zero" style="height:2px" title="1点 0 笔"></i><i class="zero" style="height:2px" title="2点 0 笔"></i><i class="zero" style="height:2px" title="3点 0 笔"></i><i class="zero" style="height:2px" title="4点 0 笔"></i><i class="zero" style="height:2px" title="5点 0 笔"></i><i class="zero" style="height:2px" title="6点 0 笔"></i><i class="" style="height:2px" title="7点 1 笔"></i><i class="" style="height:10px" title="8点 4 笔"></i><i class="" style="height:2px" title="9点 1 笔"></i><i class="zero" style="height:2px" title="10点 0 笔"></i><i class="" style="height:32px" title="11点 13 笔"></i><i class="" style="height:48px" title="12点 19 笔"></i><i class="" style="height:45px" title="13点 18 笔"></i><i class="zero" style="height:2px" title="14点 0 笔"></i><i class="zero" style="height:2px" title="15点 0 笔"></i><i class="zero" style="height:2px" title="16点 0 笔"></i><i class="zero" style="height:2px" title="17点 0 笔"></i><i class="zero" style="height:2px" title="18点 0 笔"></i><i class="zero" style="height:2px" title="19点 0 笔"></i><i class="zero" style="height:2px" title="20点 0 笔"></i><i class="zero" style="height:2px" title="21点 0 笔"></i><i class="late" style="height:17px" title="22点 7 笔"></i><i class="late" style="height:12px" title="23点 5 笔"></i></div>
+  <div class="hAxis"><span>0</span><span></span><span></span><span></span><span></span><span></span><span>6</span><span></span><span></span><span></span><span></span><span></span><span>12</span><span></span><span></span><span></span><span></span><span></span><span>18</span><span></span><span></span><span></span><span></span><span>23</span></div>
+  <div class="hNote">深夜时段（22:00–05:00）共 12 笔。全天下单高峰在 12:00。</div>
+</div>
+
+<div class="sec">
+  <h2>麦 龄 时 间 轴 / TENURE TIMELINE</h2>
+  <div class="tl"><div class="tlLine"></div><i class="n" style="left:0.00%"></i><i class="n" style="left:0.81%"></i><i class="l" style="left:1.81%"></i><i class="l" style="left:4.60%"></i><i class="n" style="left:5.03%"></i><i class="n" style="left:7.15%"></i><i class="n" style="left:9.95%"></i><i class="n" style="left:11.32%"></i><i class="n" style="left:12.02%"></i><i class="n" style="left:14.87%"></i><i class="n" style="left:16.17%"></i><i class="n" style="left:16.95%"></i><i class="n" style="left:18.40%"></i><i class="n" style="left:19.67%"></i><i class="l" style="left:21.52%"></i><i class="l" style="left:22.23%"></i><i class="n" style="left:24.04%"></i><i class="n" style="left:25.42%"></i><i class="n" style="left:26.84%"></i><i class="n" style="left:28.97%"></i><i class="n" style="left:29.49%"></i><i class="n" style="left:30.36%"></i><i class="n" style="left:33.84%"></i><i class="n" style="left:34.54%"></i><i class="l" style="left:36.31%"></i><i class="n" style="left:38.78%"></i><i class="n" style="left:40.19%"></i><i class="l" style="left:41.21%"></i><i class="n" style="left:41.63%"></i><i class="n" style="left:43.76%"></i><i class="n" style="left:44.41%"></i><i class="n" style="left:45.17%"></i><i class="n" style="left:45.79%"></i><i class="n" style="left:48.63%"></i><i class="n" style="left:49.34%"></i><i class="n" style="left:50.05%"></i><i class="n" style="left:50.74%"></i><i class="n" style="left:51.50%"></i><i class="n" style="left:53.62%"></i><i class="n" style="left:54.97%"></i><i class="n" style="left:56.43%"></i><i class="l" style="left:57.37%"></i><i class="l" style="left:60.20%"></i><i class="n" style="left:60.63%"></i><i class="n" style="left:61.32%"></i><i class="n" style="left:63.42%"></i><i class="l" style="left:70.78%"></i><i class="l" style="left:71.46%"></i><i class="n" style="left:73.17%"></i><i class="n" style="left:74.02%"></i><i class="n" style="left:78.22%"></i><i class="n" style="left:78.89%"></i><i class="n" style="left:79.63%"></i><i class="n" style="left:80.28%"></i><i class="n" style="left:83.09%"></i><i class="n" style="left:85.26%"></i><i class="l" style="left:86.26%"></i><i class="n" style="left:86.64%"></i><i class="n" style="left:87.36%"></i><i class="n" style="left:88.08%"></i><i class="n" style="left:88.78%"></i><i class="l" style="left:89.76%"></i><i class="n" style="left:90.89%"></i><i class="n" style="left:94.96%"></i><i class="n" style="left:95.77%"></i><i class="n" style="left:98.60%"></i><i class="n" style="left:99.32%"></i><i class="n" style="left:100.00%"></i></div>
+  <div class="tlLab"><span>首单 2025-09-23</span><span>麦龄 143 天</span><span>最近 2026-02-12</span></div>
+</div>
+
+<div class="sec">
+  <h2>五 维 评 分 卡 / SCORECARD</h2>
+  <div class="dim"><div class="dimT"><span class="n">履约稳定性</span><span><span class="s" style="color:#B8860B">55</span><span class="w"> ×20%</span></span></div><div class="dimB"><i style="width:55%;background:#B8860B"></i><span class="nt" style="left:60%"></span></div><div class="dimN">间隔变异 0.78，偶有波动；平均 2.1 天一单，频次偏高</div></div><div class="dim"><div class="dimT"><span class="n">预算约束力</span><span><span class="s" style="color:#B8860B">62</span><span class="w"> ×20%</span></span></div><div class="dimB"><i style="width:62%;background:#B8860B"></i><span class="nt" style="left:60%"></span></div><div class="dimN">单笔金额变异 0.62，偶有大额，尚在合理区间；单均 ¥29.1</div></div><div class="dim"><div class="dimT"><span class="n">自律度</span><span><span class="s" style="color:#FFC72C">82</span><span class="w"> ×25%</span></span></div><div class="dimB"><i style="width:82%;background:#FFC72C"></i><span class="nt" style="left:60%"></span></div><div class="dimN">深夜（22:00-05:00）下单 12 笔，占比 18%；单均约 652 kcal</div></div><div class="dim"><div class="dimT"><span class="n">集中度</span><span><span class="s" style="color:#FFC72C">90</span><span class="w"> ×15%</span></span></div><div class="dimB"><i style="width:90%;background:#FFC72C"></i><span class="nt" style="left:60%"></span></div><div class="dimN">综合集中度 0.28，有固定偏好又保留弹性，最健康</div></div><div class="dim weak"><div class="dimT"><span class="n">资产健康度<span class="tag">短板</span></span><span><span class="s" style="color:#E5484D">38</span><span class="w"> ×20%</span></span></div><div class="dimB"><i style="width:38%;background:#E5484D"></i><span class="nt" style="left:60%"></span></div><div class="dimN">即将过期积分 640；在手券 6 张，其中 7 日内到期 3 张；综合沉睡率 50%</div></div>
+</div>
+
+<div class="sec">
+  <h2>关 键 指 标 / KEY METRICS</h2>
+  <div class="big3"><div class="kpiBig gold"><div class="k">订单总数</div><div class="v">68<span class="u">笔</span></div></div><div class="kpiBig gold"><div class="k">麦龄</div><div class="v">143<span class="u">天</span></div></div><div class="kpiBig"><div class="k">累计消费</div><div class="v">1,976.3<span class="u">元</span></div></div></div>
+  <div class="small"><div class="sm"><span class="k">单均金额</span><span class="v">¥29.1</span></div><div class="sm"><span class="k">深夜占比</span><span class="v">18%</span></div><div class="sm"><span class="k">最长连击</span><span class="v">7 天</span></div><div class="sm"><span class="k">单均热量</span><span class="v">652 kcal</span></div><div class="sm"><span class="k">在手券</span><span class="v warnv">6 张</span></div><div class="sm"><span class="k">可用积分</span><span class="v warnv">2,380</span></div><div class="sm"><span class="k">门店集中度</span><span class="v">0.26</span></div></div>
+</div>
+
+<div class="sec">
+  <h2>风 险 事 件 流 水 / RISK EVENT LOG</h2>
+  <table>
+    <tr><th style="width:52px">等级</th><th style="width:132px">规则码</th>
+        <th>触发描述</th><th style="width:38%">处置建议</th></tr>
+    <tr><td><span class="lv mid">中</span></td><td><span class="code">LATE-NIGHT</span></td><td class="evText">深夜时段下单 12 笔，占比 18%</td><td class="act">建议将 22:00 后的加餐纳入月度预算</td></tr><tr><td><span class="lv mid">中</span></td><td><span class="code">STREAK</span></td><td class="evText">最长连续 7 天下单</td><td class="act">连续性偏高，注意是否形成依赖</td></tr><tr><td><span class="lv high">高</span></td><td><span class="code">DORMANT-POINTS</span></td><td class="evText">有 640 积分即将过期</td><td class="act">过期前兑换，属于典型的资产减值</td></tr><tr><td><span class="lv mid">中</span></td><td><span class="code">COUPON-EXPIRY</span></td><td class="evText">3 张券将在 7 日内失效</td><td class="act">优先核销临期券，避免时间价值归零</td></tr><tr><td><span class="lv mid">中</span></td><td><span class="code">AMOUNT-SPIKE</span></td><td class="evText">单笔最高 ¥93.1，为单均 ¥29.1 的 3.2 倍</td><td class="act">大额异动，可能来自团餐或多人拼单</td></tr><tr><td><span class="lv low">低</span></td><td><span class="code">STORE-DRIFT</span></td><td class="evText">涉及 5 家不同门店</td><td class="act">门店漂移，忠诚度信号偏弱</td></tr>
+  </table>
+</div>
+
+<div class="ft">
+  <b>数据来源</b>：演示数据集（固定随机种子 1024，非真实账号数据）<br>
+  <b>方法说明</b>：本报告参照信贷评分卡思路构造——先由订单、积分、券、营养四类只读数据提取特征，
+  再按五个维度分箱赋分，加权映射到 300–900 分数域。所有分值均可回溯到真实字段，缺失字段走中性分而非补零。<br>
+  <b>免责声明</b>：本项目为 1024 程序员节「麦当劳程序员创意开发大赛」参赛作品，由参赛者独立开发，
+  非麦当劳官方产品。报告结果仅供娱乐与自我观察，不构成医疗、营养、财务或任何专业建议；
+  餐品信息、价格及供应状态以麦当劳官方渠道的实时结果为准。<br>
+  <b>隐私说明</b>：报告生成过程全程只读，不创建、不修改、不取消任何订单，不消耗积分，不领取优惠券。
+</div>
+
+</div></body></html>
