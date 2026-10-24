@@ -1,0 +1,21 @@
+# 含个人消费数据的报告，一律不进仓库
+*.local.html
+report*.html
+!examples/demo-report.html
+
+# Token / 真实配置
+.env
+*.token
+mcp-config.json
+mcp.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
